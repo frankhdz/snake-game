@@ -23,9 +23,10 @@ window.onload = function()
         }
 
         var gameSound = document.getElementById("music"),
-        gameoverSound = document.getElementById("gameover");
+        gameoverSound = document.getElementById("gameover"),
+        eatSound = document.getElementById("eat");
 
-        var files = [gameSound, gameoverSound];
+        var files = [gameSound, gameoverSound, eatSound];
 
        // alert(maxcountw+" "+maxcounth)
         var fontlink = "https://www.google.com/fonts#UsePlace:use/Collection:Oswald";
@@ -156,6 +157,10 @@ window.onload = function()
 
     function animate(){
         
+        if(isrun==false){
+            gameSound.pause();
+        }
+
         if(isrun){
             ++counter;
             
@@ -209,6 +214,7 @@ window.onload = function()
         ctx.font = '50px "arcade"';
         ctx.fillText('Game Over', ((canvas.width / 2) - (ctx.measureText('Game Over!').width / 2)), maxcounth/2);
         ctx.font = '20px "arcade"';
+        eatSound.pause();
         gameSound.pause();
         gameoverSound.currentTime = 0;
         gameoverSound.play();
@@ -246,7 +252,10 @@ function game()
                 }
                 if (gameGrid[snake[0].x][snake[0].y] === 1) {
                     score += 10;
-                    
+                    //add game sound event here
+                     eatSound.pause();
+                     eatSound.currentTime=0;
+                     eatSound.play();
                     ++level;
                     if(level>11){
                         level=11;
@@ -317,11 +326,14 @@ function game()
                  window.cancelAnimationFrame(rungame);
                 active=false;
                 click = true;
+                eatSound.pause();
+                gameSound.pause();
             }else{
                 window.cancelAnimationFrame(rungame);
                 rungame = window.requestAnimationFrame(animate);
                 active=true;
                 click = false;
+                 gameSound.play();
                // animate();
             }
         }
