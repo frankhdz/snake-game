@@ -22,6 +22,11 @@ window.onload = function()
             var maxcounth = 200//Math.ceil((window.innerHeight/10) * 10)-20 ;
         }
 
+        var gameSound = document.getElementById("music"),
+        gameoverSound = document.getElementById("gameover");
+
+        var files = [gameSound, gameoverSound];
+
        // alert(maxcountw+" "+maxcounth)
         var fontlink = "https://www.google.com/fonts#UsePlace:use/Collection:Oswald";
         ctx = canvas.getContext('2d'),
@@ -54,6 +59,9 @@ window.onload = function()
         gameGrid = foodRandom(gameGrid);
 
         game();
+
+        gameSound.currentTime = 0;
+        gameSound.play();
    
 
     function reset(){   
@@ -74,6 +82,9 @@ window.onload = function()
        snake = new Array(3),
        ctx.clearRect(0, 0, canvas.width, canvas.height);
        ctx.fillStyle = 'black';
+       gameoverSound.pause();
+        gameSound.currentTime = 0;
+        gameSound.play();
       // 
        //gameGrid.length = 0;
       
@@ -198,6 +209,9 @@ window.onload = function()
         ctx.font = '50px "arcade"';
         ctx.fillText('Game Over', ((canvas.width / 2) - (ctx.measureText('Game Over!').width / 2)), maxcounth/2);
         ctx.font = '20px "arcade"';
+        gameSound.pause();
+        gameoverSound.currentTime = 0;
+        gameoverSound.play();
 
     }
     
@@ -205,7 +219,7 @@ window.onload = function()
 function game() 
     {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+        
         for (var i = snake.length - 1; i >= 0; i--) {
 
             if (i === 0) {
